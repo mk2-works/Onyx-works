@@ -1,0 +1,64 @@
+/* ============ Тёмная тема ONYX для страницы Марка ============
+   Не деструктивно: все правила активны, пока НЕ включена светлая тема.
+   Светлая включается атрибутом data-theme="light" на <html> (theme.js). */
+
+:root:not([data-theme="light"]) {
+  --color-bg-top: #101014;
+  --color-bg-bottom: #0B0B0E;
+  --color-black: #F4F4F6;
+  --color-white: #14141A;
+  --color-accent: #8B6FD8;
+  --color-gray-dark: #C9C9D2;
+  --color-gray-muted: #8E8E98;
+  --color-placeholder: #26242E;
+}
+
+:root:not([data-theme="light"]) body { background: #0B0B0E; }
+
+/* Шапка: тёмное стекло */
+:root:not([data-theme="light"]) .header {
+  background: rgba(16, 16, 20, 0.55);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 768px) {
+  :root:not([data-theme="light"]) .header__nav {
+    background: rgba(12, 12, 17, 0.92);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Hero: кольца и текст читаемы на тёмном */
+:root:not([data-theme="light"]) .hero__ring { border-color: rgba(255, 255, 255, 0.75); }
+:root:not([data-theme="light"]) .hero__rings-text { color: #F4F4F6; }
+
+/* Кнопки */
+:root:not([data-theme="light"]) .btn--accent { color: #FFFFFF; }
+:root:not([data-theme="light"]) .btn--light { box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.12); }
+
+/* Секции и карточки */
+:root:not([data-theme="light"]) .directions { background: #0F0F14; }
+:root:not([data-theme="light"]) .directions__card--white { background: #17171E; }
+:root:not([data-theme="light"]) .directions__card--glass { background: rgba(255, 255, 255, 0.04); }
+:root:not([data-theme="light"]) .directions__card--ai .tag { background: rgba(255, 255, 255, 0.06); }
+
+/* Плашки кейсов: светлый фон, тёмный текст */
+:root:not([data-theme="light"]) .case__tag {
+  background: #F4F4F6;
+  color: #101014;
+}
+
+/* Портфолио и слайды */
+:root:not([data-theme="light"]) .portfolio { background: #0B0B0E; }
+:root:not([data-theme="light"]) .case__slide img { background: #26242E; }
+:root:not([data-theme="light"]) .case__info {
+  background: rgba(18, 18, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+:root:not([data-theme="light"]) img.case__info-icon { filter: invert(1); }
+
+/* Контакты: значения белые на тёмных карточках */
+:root:not([data-theme="light"]) .contact-card__value { color: #FFFFFF; }
+
+/* Линия таймлайна опыта */
+:root:not([data-theme="light"]) .experience__list::before { background: rgba(139, 111, 216, 0.3); }

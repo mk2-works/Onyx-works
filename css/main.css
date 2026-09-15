@@ -1,0 +1,1276 @@
+/* ============ ONYX WORKS: главная ============
+   Тёмная тема — основная («оникс»): глубокий чёрный, холодные блики, стекло.
+   Светлая — через data-theme="light". */
+
+:root {
+  --color-bg-top: #101014;
+  --color-bg-bottom: #0B0B0E;
+  --color-black: #F4F4F6;
+  --color-white: #14141A;
+  --color-accent: #8B6FD8;
+  --color-gray-dark: #C9C9D2;
+  --color-gray-muted: #8E8E98;
+  --onyx-body: #0B0B0E;
+  --onyx-panel-1: #121218;
+  --onyx-panel-2: #16161E;
+  --onyx-surface: rgba(255, 255, 255, 0.05);
+  --onyx-border: rgba(255, 255, 255, 0.12);
+  --onyx-glass: rgba(16, 16, 20, 0.55);
+}
+
+:root[data-theme="light"] {
+  --color-bg-top: #F7F7F7;
+  --color-bg-bottom: #E9E9E9;
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  --color-accent: #7B59C0;
+  --color-gray-dark: #4D4D4D;
+  --color-gray-muted: #888888;
+  --onyx-body: #F7F7F7;
+  --onyx-panel-1: #FFFFFF;
+  --onyx-panel-2: #F0F0F3;
+  --onyx-surface: rgba(255, 255, 255, 0.55);
+  --onyx-border: rgba(0, 0, 0, 0.08);
+  --onyx-glass: rgba(247, 247, 247, 0.6);
+}
+
+/* Фон страницы = верх hero: шапка стоит на том же тоне, без белых полос */
+body { background: var(--onyx-body); }
+
+/* ---- Шапка ---- */
+.header {
+  padding: 8px 0;
+  background: var(--onyx-glass);
+  border-bottom: 1px solid var(--onyx-border);
+}
+
+/* Фон только у выпадающего меню на мобильных, у десктопного nav — прозрачный */
+.header__nav { background: transparent; }
+
+.header__logo img {
+  padding: 4px;
+  margin: 8px;
+  display: block;
+  height: 32px;
+  width: auto;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.header__logo:hover img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 12px rgba(139, 111, 216, 0.6));
+}
+
+.header__logo-text {
+  display: none;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-black);
+}
+
+.header__logo img.is-missing { display: none; }
+.header__logo img.is-missing ~ .header__logo-text { display: block; }
+
+/* ---- Переключатель темы ---- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--onyx-border);
+  border-radius: 50%;
+  background: var(--onyx-surface);
+  color: var(--color-black);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 14px rgba(139, 111, 216, 0.35);
+}
+
+.theme-toggle__sun { display: none; }
+:root[data-theme="light"] .theme-toggle__sun { display: block; }
+:root[data-theme="light"] .theme-toggle__moon { display: none; }
+
+/* ---- Главный экран ---- */
+.m-hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--color-bg-top) 0%, var(--color-bg-bottom) 100%);
+  /* +24px компенсации за уменьшенную шапку — текст остаётся на своём месте */
+  padding: 134px 0 90px;
+}
+
+.m-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(600px 300px at 80% 10%, rgba(139, 111, 216, 0.16), transparent 70%),
+    radial-gradient(500px 260px at 15% 85%, rgba(255, 255, 255, 0.05), transparent 70%),
+    linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.045) 47%, transparent 53%),
+    linear-gradient(115deg, transparent 66%, rgba(139, 111, 216, 0.06) 71%, transparent 77%);
+}
+
+.m-hero__bg { position: absolute; inset: 0; pointer-events: none; }
+
+.m-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.4;
+  animation: blob-drift 14s ease-in-out infinite alternate;
+}
+
+.m-blob--1 { width: 420px; height: 420px; background: rgba(139, 111, 216, 0.3); top: -120px; left: -80px; }
+.m-blob--2 { width: 320px; height: 320px; background: rgba(255, 255, 255, 0.12); top: 30%; right: -100px; animation-delay: -5s; }
+.m-blob--3 { width: 260px; height: 260px; background: rgba(139, 111, 216, 0.2); bottom: -120px; left: 35%; animation-delay: -9s; }
+
+:root[data-theme="light"] .m-blob--2 { background: rgba(255, 255, 255, 0.9); }
+
+@keyframes blob-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(40px, 30px) scale(1.15); }
+}
+
+.m-hero__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+}
+
+.m-hero__title {
+  font-size: clamp(40px, 6vw, 76px);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--color-black);
+}
+
+.m-hero__title span { color: var(--color-accent); }
+
+.m-hero__sub {
+  margin-top: 40px;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.4;
+  color: var(--color-gray-dark);
+  max-width: 640px;
+}
+
+.m-hero .btn {
+  width: auto;
+  min-width: 280px;
+  padding: 0 58px;
+}
+
+/* «Смотреть кейсы» — белый текст в обеих темах */
+.btn--accent { color: #FFFFFF; }
+
+/* ВРЕМЕННО: обводка баббла «Оставить заявку» скрыта */
+.m-hero .bubble-stroke { display: none; }
+
+/* ---- Что мы делаем: 3 карточки, фон — оттенок оникса №1 ---- */
+.services {
+  padding: 70px 0 50px;
+  background: var(--onyx-panel-1);
+}
+
+.services__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.services__title {
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--onyx-border);
+  background: var(--onyx-surface);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 32px rgba(139, 111, 216, 0.18);
+}
+
+.service-card__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.service-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.service-card .tag {
+  font-size: 14px;
+  padding: 8px 14px;
+  background: var(--onyx-surface);
+  border: 1px solid var(--onyx-border);
+  color: var(--color-black);
+}
+
+/* ---- Кейсы: компактная пилюля в один ряд, блок центрирован целиком ---- */
+.portfolio-main { position: relative; }
+
+.cases-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: fit-content;
+  margin: 0 auto 32px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--onyx-glass);
+  border: 1px solid var(--onyx-border);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+.cases-bar__title {
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 600;
+  line-height: 1.2;
+  /*color: var(--color-accent);*/
+  color: white;
+}
+
+.switcher {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.switcher__btn {
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1px solid var(--onyx-border);
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-black);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.switcher__btn.is-active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #FFFFFF;
+}
+
+.portfolio-main .case.is-hidden { display: none; }
+
+/* Слайды: подложка + фото поверх, 16:9 */
+.portfolio-main .case__slide {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.portfolio-main .case__slide .ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1A1A20 0%, #26242E 100%);
+  font-size: clamp(20px, 3vw, 40px);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  padding: 24px;
+}
+
+:root[data-theme="light"] .portfolio-main .case__slide .ph {
+  background: linear-gradient(135deg, #DBDBDB 0%, #C9C4D8 100%);
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.portfolio-main .case__slide img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+}
+
+.portfolio-main .case__slide img.is-missing { display: none; }
+
+/* Инфо-карточка: тёмное стекло */
+.portfolio-main .case__info {
+  background: rgba(18, 18, 24, 0.6);
+  border: 1px solid var(--onyx-border);
+}
+
+:root[data-theme="light"] .portfolio-main .case__info {
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+}
+
+.portfolio-main .case__info-icon { color: var(--color-black); }
+
+/* Плашки кейсов: светлый фон, тёмный текст (инверсия в тёмной теме) */
+.case__tag {
+  background: #F4F4F6;
+  color: #101014;
+}
+
+:root[data-theme="light"] .case__tag {
+  background: linear-gradient(180deg, #363636 0%, #000000 100%);
+  color: #FFFFFF;
+}
+
+/* ---- Клиенты: оттенок оникса №2, заголовок слева ---- */
+.clients {
+  padding: 70px 0;
+  background: var(--onyx-panel-2);
+}
+
+.clients__title {
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+.clients__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 32px 64px;
+}
+
+.client { position: relative; display: inline-flex; }
+
+.client img {
+  display: block;
+  height: 56px;
+  width: auto;
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition: filter 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.client:hover img {
+  filter: none;
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+.client img.is-missing { display: none; }
+
+.client__fallback {
+  display: none;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-gray-muted);
+  opacity: 0.75;
+}
+
+.client img.is-missing ~ .client__fallback { display: block; }
+
+.client:hover .client__fallback { color: var(--color-accent); opacity: 1; }
+
+/* ---- Контакты: всегда тёмные, значения белые, кнопка копирования ---- */
+.contacts { background: #17171C; }
+
+.contact-card {
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.contact-card__link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.contact-card__value { color: #FFFFFF; }
+
+.copy-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--color-accent);
+}
+
+.copy-btn__check { display: none; }
+.copy-btn.is-copied .copy-btn__icon { display: none; }
+.copy-btn.is-copied .copy-btn__check { display: block; }
+
+/* ---- Заявка ---- */
+.lead-card {
+  margin-top: 32px;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid var(--onyx-border);
+  background: var(--onyx-surface);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+}
+
+.lead-card__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-black);
+  margin-bottom: 20px;
+}
+
+.m-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.m-form input {
+  flex: 1 1 55%;
+  height: 64px;
+  padding: 0 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--onyx-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-black);
+  font-family: inherit;
+  font-size: 18px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.m-form input:focus { border-color: var(--color-accent); }
+
+.m-form input::placeholder { color: var(--color-gray-muted); }
+
+.m-form__btn {
+  flex: 1 1 40%;
+  width: auto;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 18px;
+}
+
+/* ---- Заглушка в полноэкранном просмотре ---- */
+.case-viewer__slide-ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  padding: 24px;
+}
+
+/* ---- Адаптив главной ---- */
+@media (max-width: 1024px) {
+  .services__grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .m-hero { padding: 90px 0 60px; }
+  .m-hero__inner { gap: 48px; }
+  .m-hero .btn { padding: 0 40px; min-width: 240px; }
+  .m-form input, .m-form__btn { flex: 1 1 100%; }
+  .clients__row { gap: 24px 40px; }
+  .client img { height: 40px; }
+  .header__nav {
+    background: var(--onyx-glass);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+}
+
+
+
+/* Кейсы: убираем белый фон, пилюля лежит поверх слайдера (20px внутри блока) */
+.portfolio-main {
+  position: relative;
+  background: transparent;
+}
+
+.cases-bar {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  z-index: 20;
+}
+
+/* Клиенты и контакты больше не сливаются: разные оттенки */
+.clients { background: var(--onyx-panel-2); }
+.contacts { background: #0A0A0D; }
+
+.contacts__title { margin-bottom: 32px; }
+
+/* Карточка заявки теперь первая — отступ снизу вместо сверху */
+.lead-card {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+/* На узких экранах пилюля возвращается обычным блоком над слайдером */
+@media (max-width: 900px) {
+  .cases-bar {
+    position: static;
+    transform: none;
+    margin: 0 auto 24px;
+  }
+}
+
+
+
+/* Карточка заявки: скругление как у карточек почты/телеграма */
+.lead-card { border-radius: var(--radius); }
+
+/* Пилюля «Кейсы»: 12px перед словом */
+.cases-bar__title { margin-left: 12px; }
+
+/* «О нас»: заголовок слева, стрелка справа, скрытые доп. услуги */
+.service-card { cursor: pointer; }
+
+.service-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.service-card__chevron {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1); /* чёрную стрелку делаем белой */
+  opacity: 0.85;
+  transition: transform 0.25s ease;
+}
+
+:root[data-theme="light"] .service-card__chevron { filter: none; }
+
+.service-card.is-open .service-card__chevron { transform: rotate(180deg); }
+
+.service-card__extra { display: none; }
+
+.service-card.is-open .service-card__extra { display: block; }
+
+.service-card__extra .service-card__tags {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--onyx-border);
+}
+
+/* «В цифрах» — замена блока клиентов */
+.facts {
+  padding: 70px 0;
+  background: var(--onyx-panel-2);
+}
+
+.facts .services__title { margin-bottom: 32px; }
+
+.facts__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.fact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--onyx-border);
+  background: var(--onyx-surface);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.fact-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-accent);
+}
+
+.fact-card__num {
+  font-size: clamp(40px, 4vw, 56px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+.fact-card__text {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-gray-dark);
+}
+
+@media (max-width: 1024px) { .facts__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .facts__grid { grid-template-columns: 1fr; } }
+
+
+
+/* ============ Hero-слайдер ============ */
+.m-hero__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.hero-slider {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+}
+.hero-slider::-webkit-scrollbar { display: none; }
+.hero-slider.is-dragging { cursor: grabbing; user-select: none; }
+
+.hero-slider__track { display: flex; }
+
+.hero-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+}
+
+/* акцент слайда красит заголовок и блобы фона */
+.hero-slide .m-hero__title span { color: var(--slide-accent, var(--color-accent)); }
+.m-blob--1 { background: var(--slide-accent, #8B6FD8); }
+.m-blob--3 { background: var(--slide-accent, #8B6FD8); }
+
+.hero-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.hero-dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--onyx-border);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.hero-dot.is-active {
+  background: var(--slide-accent, var(--color-accent));
+  transform: scale(1.25);
+}
+
+/* «О нас»: дополнительные услуги без разделительной линии */
+.service-card__extra .service-card__tags {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 8px;
+}
+
+/* Якоря не прячутся под липкую шапку */
+[id] { scroll-margin-top: 90px; }
+
+/* ============ Мобильная сетка главной ============ */
+@media (max-width: 1024px) {
+  .services__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .hero-slide { gap: 64px; }
+}
+
+@media (max-width: 768px) {
+  .m-hero { padding: 90px 0 56px; }
+  .m-hero__inner { gap: 24px; }
+  .hero-slide { gap: 48px; }
+  .m-hero .btn { padding: 0 40px; min-width: 240px; }
+}
+
+@media (max-width: 640px) {
+  .services__grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .hero-slide { gap: 40px; }
+  .hero__buttons { flex-direction: column; align-items: stretch; gap: 12px; }
+  .m-hero .btn { width: 100%; min-width: 0; padding: 0 32px; }
+  .facts__grid { grid-template-columns: 1fr; }
+}
+
+/* ============ Hero: мягкое переключение и фон «оникс» ============ */
+
+/* Акцентный цвет слайда перетекает, а не щёлкает как выключатель */
+@property --slide-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #8B6FD8;
+}
+
+.m-hero {
+  transition: --slide-accent 0.9s ease;
+  --mx: 50%;
+  --my: 40%;
+}
+
+.m-hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Сетка с растворением к краям — shimmer grid */
+.m-hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 40%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(120% 90% at 50% 40%, #000 35%, transparent 100%);
+}
+
+/* Тонировка акцентом слайда (перетекает вместе с --slide-accent) */
+.m-hero__tint {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(900px 480px at 78% 12%,
+    color-mix(in srgb, var(--slide-accent) 16%, transparent), transparent 70%);
+}
+
+/* Хрома-пятно за курсором — hover chroma как во Framer */
+.m-hero__chroma {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(520px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--slide-accent) 14%, transparent), transparent 65%);
+}
+
+/* Медленный блик-проблеск по диагонали */
+.m-hero__shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 42%, var(--shimmer) 50%, transparent 58%);
+  background-size: 250% 100%;
+  animation: hero-shimmer 9s linear infinite;
+}
+
+@keyframes hero-shimmer {
+  from { background-position: 130% 0; }
+  to { background-position: -130% 0; }
+}
+
+:root { --grid-line: rgba(255, 255, 255, 0.05); --shimmer: rgba(255, 255, 255, 0.06); }
+:root[data-theme="light"] { --grid-line: rgba(0, 0, 0, 0.06); --shimmer: rgba(123, 89, 192, 0.08); }
+
+/* Соседние слайды полупрозрачные и размытые — переход мягкий, не «топорный» */
+.hero-slide {
+  opacity: 0.25;
+  filter: blur(8px);
+  transform: scale(0.985);
+  transition: opacity 0.55s ease, filter 0.55s ease, transform 0.55s ease;
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+/* ============ Капсула «Кейсы»: внутренний зазор = внутреннему паддингу ============ */
+.cases-bar { gap: 12px; }
+
+@media (max-width: 900px) {
+  .cases-bar { margin: 24px auto; } /* сверху столько же, сколько снизу */
+}
+
+
+
+
+
+/* ============ Правки: меню, края слайдера, shimmer grid dots ============ */
+
+/* Луна — только в бургер-меню */
+.header__nav .theme-toggle { display: none; }
+
+/* Меню: плотное стекло, контент под ним не просвечивает */
+:root { --onyx-menu: rgba(12, 12, 17, 0.92); }
+:root[data-theme="light"] { --onyx-menu: rgba(250, 250, 252, 0.92); }
+
+@media (max-width: 768px) {
+  .header__nav {
+    background: var(--onyx-menu);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+  }
+  .header__nav .theme-toggle {
+    display: inline-flex;
+    margin-top: 12px;
+    align-self: flex-start;
+  }
+}
+
+/* Слайдер hero: в покое всё чётко и выровнено,
+   в момент движения края плавно растворяются — рваной границы не видно */
+.hero-slider.is-fading {
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+}
+
+/* Убираем «призрачность» соседних слайдов: больше никакого блюра/затухания */
+.hero-slide {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition: none;
+}
+
+/* Блик-бегунок и старые слои выключены окончательно */
+.m-hero__shimmer,
+.m-hero__grid,
+.m-hero__chroma { display: none; }
+
+/* ---- Framer shimmer grid dots: блеклые точки + подсветка у курсора ---- */
+.m-hero__dots,
+.m-hero__dots-bright {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle,
+    var(--dot-color) 0, var(--dot-color) 1.6px, transparent 2.8px);
+  background-size: 40px 40px;
+  background-position: 20px 20px;
+}
+
+.m-hero__dots { --dot-color: var(--dot-dim); }
+
+.m-hero__dots-bright {
+  --dot-color: var(--slide-accent, var(--color-accent));
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  -webkit-mask-image: radial-gradient(380px circle at var(--mx) var(--my),
+    #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 72%);
+  mask-image: radial-gradient(380px circle at var(--mx) var(--my),
+    #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 72%);
+  filter: drop-shadow(0 0 6px var(--dot-glow));
+}
+
+.m-hero:not(.hero-no-cursor) .m-hero__dots-bright { opacity: 1; }
+
+:root {
+  --dot-dim: rgba(255, 255, 255, 0.10);
+  --dot-glow: rgba(139, 111, 216, 0.55);
+}
+
+:root[data-theme="light"] {
+  --dot-dim: rgba(0, 0, 0, 0.10);
+  --dot-glow: rgba(123, 89, 192, 0.35);
+}
+
+
+
+/* Бесшовный фейд краёв: силу крутит JS от фазы скролла (в покое = 0) */
+.hero-slider {
+  --hero-fade: 0px;
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0, #000 var(--hero-fade),
+    #000 calc(100% - var(--hero-fade)), transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0, #000 var(--hero-fade),
+    #000 calc(100% - var(--hero-fade)), transparent 100%);
+}
+
+/* «Световая каша» справа убрана */
+.m-hero__tint { display: none; }
+
+/* Блеклые точки с размытым halo позади — едва заметны, сливаются с фоном */
+.m-hero__dots {
+  background-image:
+    radial-gradient(circle, var(--dot-core) 0, var(--dot-core) 1.4px, transparent 2.2px),
+    radial-gradient(circle, var(--dot-halo) 0, var(--dot-halo) 5px, transparent 9px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+  --dot-core: rgba(255, 255, 255, 0.07);
+  --dot-halo: rgba(255, 255, 255, 0.035);
+}
+
+:root[data-theme="light"] .m-hero__dots {
+  --dot-core: rgba(0, 0, 0, 0.06);
+  --dot-halo: rgba(0, 0, 0, 0.03);
+}
+
+/* Ховер-слой: та же структура «halo + точка», но насыщенная акцентом.
+   Интенсивность самого ховера не меняем */
+.m-hero__dots-bright {
+  background-image:
+    radial-gradient(circle, var(--slide-accent, #8B6FD8) 0, var(--slide-accent, #8B6FD8) 1.6px, transparent 2.6px),
+    radial-gradient(circle, color-mix(in srgb, var(--slide-accent, #8B6FD8) 35%, transparent) 0, color-mix(in srgb, var(--slide-accent, #8B6FD8) 35%, transparent) 6px, transparent 10px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+}
+
+
+/* ============ Чистка фона и калибровка shimmer grid ============ */
+
+/* Вся статичная «грязь» позади (лучи, пятна, диагональные блики) — выключена */
+.m-hero::before { display: none; }
+.m-hero__tint { display: none; }
+
+/* Базовые точки: едва заметны, сливаются с фоном (как в референсе) */
+.m-hero__dots {
+  --dot-core: rgba(255, 255, 255, 0.05);
+  --dot-halo: rgba(255, 255, 255, 0.022);
+  background-image:
+    radial-gradient(circle, var(--dot-core) 0, var(--dot-core) 1.2px, transparent 2px),
+    radial-gradient(circle, var(--dot-halo) 0, var(--dot-halo) 4px, transparent 7px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+}
+
+:root[data-theme="light"] .m-hero__dots {
+  --dot-core: rgba(0, 0, 0, 0.05);
+  --dot-halo: rgba(0, 0, 0, 0.02);
+}
+
+/* Подсветка у курсора: круг меньше, затухание мягче, интенсивность та же */
+.m-hero__dots-bright {
+  background-image:
+    radial-gradient(circle, var(--slide-accent, #8B6FD8) 0, var(--slide-accent, #8B6FD8) 1.5px, transparent 2.4px),
+    radial-gradient(circle, color-mix(in srgb, var(--slide-accent, #8B6FD8) 30%, transparent) 0, color-mix(in srgb, var(--slide-accent, #8B6FD8) 30%, transparent) 5px, transparent 9px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+  -webkit-mask-image: radial-gradient(260px circle at var(--mx) var(--my),
+    #000 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.25) 65%, transparent 85%);
+  mask-image: radial-gradient(260px circle at var(--mx) var(--my),
+    #000 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.25) 65%, transparent 85%);
+}
+
+/* Фейд краёв слайдера: плавный профиль 100% → 0% со ступенями */
+.hero-slider {
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0,
+    rgba(0, 0, 0, 0.35) calc(var(--hero-fade) * 0.45),
+    rgba(0, 0, 0, 0.7) calc(var(--hero-fade) * 0.75),
+    #000 var(--hero-fade),
+    #000 calc(100% - var(--hero-fade)),
+    rgba(0, 0, 0, 0.7) calc(100% - var(--hero-fade) * 0.75),
+    rgba(0, 0, 0, 0.35) calc(100% - var(--hero-fade) * 0.45),
+    transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0,
+    rgba(0, 0, 0, 0.35) calc(var(--hero-fade) * 0.45),
+    rgba(0, 0, 0, 0.7) calc(var(--hero-fade) * 0.75),
+    #000 var(--hero-fade),
+    #000 calc(100% - var(--hero-fade)),
+    rgba(0, 0, 0, 0.7) calc(100% - var(--hero-fade) * 0.75),
+    rgba(0, 0, 0, 0.35) calc(100% - var(--hero-fade) * 0.45),
+    transparent 100%);
+}
+
+/* Серо-белая кнопка: полностью непрозрачная, фон позади не виден */
+:root { --btn-light-bg: #E9E9EE; --btn-light-fg: #101014; }
+:root[data-theme="light"] { --btn-light-bg: #FFFFFF; --btn-light-fg: #000000; }
+
+.m-hero .btn--light {
+  background: var(--btn-light-bg);
+  color: var(--btn-light-fg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.m-hero .btn--light:hover { background: #F7F7FA; }
+
+:root[data-theme="light"] .m-hero .btn--light {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="light"] .m-hero .btn--light:hover { background: #F1F1F4; }
+
+
+
+/* ============ Правки: меню, луна, калибровка точек ============ */
+
+/* Переключатель темы скрыт полностью (временно).
+   Когда вернём — убрать это правило и оставить ОДИН элемент с id="theme-toggle" */
+.theme-toggle,
+.header__nav .theme-toggle { display: none !important; }
+
+/* Меню: к правому краю фрейма. Зазоры между пунктами не трогаем,
+   по краям блока отступов нет — крайний пункт равен правой границе */
+.header__inner { justify-content: space-between; }
+
+.header__nav {
+  margin-left: auto;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Точки: ещё −10% яркости (ядро и halo), halo мягче и размытее */
+.m-hero__dots {
+  --dot-core: rgba(255, 255, 255, 0.045);
+  --dot-halo: rgba(255, 255, 255, 0.02);
+  background-image:
+    radial-gradient(circle, var(--dot-core) 0, var(--dot-core) 1.2px, transparent 2px),
+    radial-gradient(circle, var(--dot-halo) 0, var(--dot-halo) 3px, transparent 9px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+  filter: blur(1px);
+}
+
+:root[data-theme="light"] .m-hero__dots {
+  --dot-core: rgba(0, 0, 0, 0.045);
+  --dot-halo: rgba(0, 0, 0, 0.018);
+}
+
+/* Ховер-слой: halo тусклее на 10% и шире растекается, лёгкий blur для мягкости;
+   насыщенность самих точек у курсора не меняем */
+.m-hero__dots-bright {
+  background-image:
+    radial-gradient(circle, var(--slide-accent, #8B6FD8) 0, var(--slide-accent, #8B6FD8) 1.5px, transparent 2.4px),
+    radial-gradient(circle, color-mix(in srgb, var(--slide-accent, #8B6FD8) 27%, transparent) 0, color-mix(in srgb, var(--slide-accent, #8B6FD8) 27%, transparent) 5px, transparent 10px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+  filter: blur(0.8px) drop-shadow(0 0 6px var(--dot-glow));
+}
+
+
+
+
+/* Halo: шире на 35% и мягче (добавлен blur для плавного затухания) */
+.m-hero__dots {
+  background-image:
+    radial-gradient(circle, var(--dot-core) 0, var(--dot-core) 1.2px, transparent 2px),
+    radial-gradient(circle, var(--dot-halo) 0, var(--dot-halo) 5.5px, transparent 9.5px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+  filter: blur(1.2px);
+}
+
+.m-hero__dots-bright {
+  background-image:
+    radial-gradient(circle, var(--slide-accent, #8B6FD8) 0, var(--slide-accent, #8B6FD8) 1.5px, transparent 2.4px),
+    radial-gradient(circle, color-mix(in srgb, var(--slide-accent, #8B6FD8) 27%, transparent) 0, color-mix(in srgb, var(--slide-accent, #8B6FD8) 27%, transparent) 7px, transparent 13.5px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+  filter: blur(1px) drop-shadow(0 0 8px var(--dot-glow));
+}
+
+
+/* Слайды анимируются по opacity из JS — подсказка композитору для плавности */
+.hero-slide { will-change: opacity; }
+
+
+
+
+/* Сетка точек и halo: у боковых границ интенсивность ниже.
+   Две ручки для настройки степени эффекта:
+   --dots-edge       — ширина зоны затухания от каждого края (в % ширины hero);
+   --dots-edge-alpha — сколько яркости остаётся у самого края
+                       (0% — гаснет полностью, 100% — эффекта нет). */
+:root {
+  --dots-edge: 35%;
+  --dots-edge-alpha: 5%;
+}
+
+.m-hero__dots {
+  -webkit-mask-image: linear-gradient(to right,
+    color-mix(in srgb, #000 var(--dots-edge-alpha), transparent) 0,
+    #000 var(--dots-edge),
+    #000 calc(100% - var(--dots-edge)),
+    color-mix(in srgb, #000 var(--dots-edge-alpha), transparent) 100%);
+  mask-image: linear-gradient(to right,
+    color-mix(in srgb, #000 var(--dots-edge-alpha), transparent) 0,
+    #000 var(--dots-edge),
+    #000 calc(100% - var(--dots-edge)),
+    color-mix(in srgb, #000 var(--dots-edge-alpha), transparent) 100%);
+}
+
+
+
+
+/* Тонкая граница «стекла» по краям секций, как у шапки */
+:root { --onyx-seam: rgba(255, 255, 255, 0.08); }
+:root[data-theme="light"] { --onyx-seam: rgba(0, 0, 0, 0.10); }
+
+.m-hero,
+.services,
+.portfolio-main,
+.facts {
+  border-bottom: 1px solid var(--onyx-seam);
+}
+
+
+
+
+
+/* Точки: 20px от нижней границы hero гарантированно.
+   Точки в потоке (не absolute), отступ держит padding секции —
+   не зависит ни от высоты hero, ни от контекста позиционирования */
+.m-hero { padding-bottom: 20px; }
+.hero-dots { position: static; }
+
+/* Капсула «Кейсы»: временно выключка по левому краю контейнера */
+.cases-bar {
+  left: max(var(--pad-side), calc((100% - 1328px) / 2 + var(--pad-side)));
+  transform: none;
+}
+
+@media (max-width: 900px) {
+  .cases-bar {
+    margin: 24px 0 24px var(--pad-side);
+  }
+}
+
+
+/* ============ Shimmer: гауссово halo как в референсе ============ */
+
+/* Базовая сетка: halo без «кромки диска» — плавное затухание от центра,
+   ядро с мягким краем; blur больше не нужен (градиент сам гладкий) */
+.m-hero__dots {
+  background-image:
+    radial-gradient(circle,
+      rgba(255, 255, 255, 0.055) 0,
+      rgba(255, 255, 255, 0.045) 0.6px,
+      rgba(255, 255, 255, 0.020) 1.1px,
+      transparent 1.8px),
+    radial-gradient(circle,
+      rgba(255, 255, 255, 0.022) 0,
+      rgba(255, 255, 255, 0.016) 2px,
+      rgba(255, 255, 255, 0.010) 3.5px,
+      rgba(255, 255, 255, 0.005) 5px,
+      rgba(255, 255, 255, 0.002) 6.5px,
+      transparent 8px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+  filter: none;
+}
+
+:root[data-theme="light"] .m-hero__dots {
+  background-image:
+    radial-gradient(circle,
+      rgba(0, 0, 0, 0.055) 0,
+      rgba(0, 0, 0, 0.045) 0.6px,
+      rgba(0, 0, 0, 0.020) 1.1px,
+      transparent 1.8px),
+    radial-gradient(circle,
+      rgba(0, 0, 0, 0.020) 0,
+      rgba(0, 0, 0, 0.014) 2px,
+      rgba(0, 0, 0, 0.009) 3.5px,
+      rgba(0, 0, 0, 0.004) 5px,
+      rgba(0, 0, 0, 0.002) 6.5px,
+      transparent 8px);
+}
+
+/* Ховер-слой: то же гладкое halo, но акцентное; ядро чуть чётче,
+   bloom тоньше и ближе к точке (4px вместо 6) */
+.m-hero__dots-bright {
+  background-image:
+    radial-gradient(circle,
+      var(--slide-accent, #8B6FD8) 0,
+      color-mix(in srgb, var(--slide-accent, #8B6FD8) 80%, transparent) 0.7px,
+      color-mix(in srgb, var(--slide-accent, #8B6FD8) 35%, transparent) 1.4px,
+      transparent 2.2px),
+    radial-gradient(circle,
+      color-mix(in srgb, var(--slide-accent, #8B6FD8) 30%, transparent) 0,
+      color-mix(in srgb, var(--slide-accent, #8B6FD8) 20%, transparent) 2px,
+      color-mix(in srgb, var(--slide-accent, #8B6FD8) 11%, transparent) 3.5px,
+      color-mix(in srgb, var(--slide-accent, #8B6FD8) 5%, transparent) 5px,
+      color-mix(in srgb, var(--slide-accent, #8B6FD8) 2%, transparent) 6.5px,
+      transparent 8px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 20px 20px, 20px 20px;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--slide-accent, #8B6FD8) 45%, transparent));
+}
+
+
+
+
+
+
+
+/* Луна возвращается: последний пункт меню (перебивает временное скрытие) *//*
+.header__nav .theme-toggle { display: inline-flex !important; }*/
+
+
+
+/* Бургер-меню на главной: то же, но в тёмном стекле */
+@media (max-width: 768px) {
+  .header__nav {
+    padding-left: 20px;
+    padding-right: 20px;
+    background: rgba(12, 12, 17, 0.98);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+  }
+}
+
+
+/* Контакты: карточки не вылезают за контейнер на мобильных */
+.contacts__grid > * { min-width: 0; }
+.contact-card { min-width: 0; }
+.contact-card__link { min-width: 0; flex-wrap: wrap; }
+.contact-card__value {
+  font-size: clamp(16px, 4vw, 24px);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+html, body { overflow-x: hidden; }
